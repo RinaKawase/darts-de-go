@@ -2,5 +2,6 @@
     <string name="app_name">darts-de-go</string>
     <string name="initial_setting_info_main">どんと行こう！ \nダーツの旅行！！</string>
     <string name="initial_setting_info_residential_area">まずは、Youの居住区域を教えてくれるかな？</string>
-    <string name="initial_setting_info_nearest_train_station">最寄り駅を教えて欲しい</string>>
+    <string name="initial_setting_info_nearest_train_station">最寄り駅を教えて欲しい</string>
+    <string name="home_info_main">Youが惹かれている場所はどこだろう？</string>
 </resources>
