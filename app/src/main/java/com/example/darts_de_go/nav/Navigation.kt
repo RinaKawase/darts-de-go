@@ -20,7 +20,7 @@ fun Navigation() {
 
     // TODO: startDestinationを初期設定画面に変更する
     // TODO: ボタン押下での遷移先はあくまで仮
-    NavHost(navController = navController, startDestination = Screen.HomeScreen.screenName) {
+    NavHost(navController = navController, startDestination = Screen.InitialSettingScreen.screenName) {
         composable(Screen.HomeScreen.screenName) {
             HomeScreen(onClickButton = { navController.navigate(Screen.MapScreen.screenName) })
         }
