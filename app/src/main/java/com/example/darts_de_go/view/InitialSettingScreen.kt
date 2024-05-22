@@ -34,9 +34,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.darts_de_go.model.state.InitialSettingState
+import com.example.darts_de_go.viewModel.InitialSettingScreenViewModel
+import timber.log.Timber
 
 /**
  * InitialSettingScreen
@@ -49,10 +51,14 @@ import androidx.compose.ui.platform.LocalContext
 fun InitialSettingScreen(
     onClickButton: ()->Unit = {}
 ) {
-    Column() {
-        UserChoiceComponent(onClickButton)
+    val viewModel: InitialSettingScreenViewModel = viewModel()
+    // 読み取り用
+    val initialSettingState by viewModel.state.collectAsState()
+
+    Column {
+        UserChoiceComponent(onClickButton, viewModel, initialSettingState)
         Spacer(modifier = Modifier.weight(1f))
-        ButtonComponent(onClickButton)
+        ButtonComponent(onClickButton, viewModel, initialSettingState)
     }
 }
 
@@ -63,13 +69,15 @@ fun InitialSettingScreen(
  */
 @Composable
 fun UserChoiceComponent(
-    onClickButton: ()->Unit = {}
+    onClickButton: ()->Unit = {},
+    viewModel: InitialSettingScreenViewModel,
+    initialSettingState: InitialSettingState
 ) {
     var expanded by remember { mutableStateOf(false)}
     val context = LocalContext.current
     val coffeeDrinks = arrayOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
     val selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
-    val focusRequester = remember { FocusRequester() }
+
 
     Column(
         modifier = Modifier.padding(
@@ -109,7 +117,7 @@ fun UserChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier.focusRequester(focusRequester)
+
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
@@ -144,7 +152,7 @@ fun UserChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier.focusRequester(focusRequester)
+
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
@@ -186,8 +194,7 @@ fun UserChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier
-                        .focusRequester(focusRequester)
+
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
@@ -222,7 +229,7 @@ fun UserChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier.focusRequester(focusRequester)
+
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
@@ -244,16 +251,24 @@ fun UserChoiceComponent(
  */
 @Composable
 fun ButtonComponent(
-    onClickButton: ()->Unit = {}
+    onClickButton: ()->Unit = {},
+    viewModel: InitialSettingScreenViewModel,
+    initialSettingState: InitialSettingState
 ) {
     Button(
-        onClick = { onClickButton() },
+        //onClick = { onClickButton() },
+        onClick = {
+            viewModel.getCityNames()
+            Timber.d("都市名: ${initialSettingState.cityName}")
+
+                  },
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 bottom = 30.dp,
                 start = 10.dp,
-                end = 10.dp),
+                end = 10.dp
+            ),
         shape = RoundedCornerShape(20.dp)
     ) {
         val offset = Offset(5.0f, 10.0f)

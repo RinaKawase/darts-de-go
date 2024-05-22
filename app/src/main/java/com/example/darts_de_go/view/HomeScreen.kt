@@ -34,8 +34,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 
 /**
@@ -48,7 +46,7 @@ fun HomeScreen(
     onClickButton: ()->Unit = {}
 ) {
     Column {
-        TravelDestChoiceComponent()
+        TravelDestChoiceComponent(onClickButton)
         Spacer(modifier = Modifier.weight(1f))
         HomeButtonComponent(onClickButton)
     }
@@ -67,7 +65,6 @@ fun TravelDestChoiceComponent(
     val context = LocalContext.current
     val coffeeDrinks = arrayOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
     val selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
-    val focusRequester = remember { FocusRequester() }
 
     Column(
         modifier = Modifier.padding(
@@ -107,7 +104,6 @@ fun TravelDestChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier.focusRequester(focusRequester)
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
@@ -142,7 +138,6 @@ fun TravelDestChoiceComponent(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },  // When tapping outside the dropdown menu, close it.
-                    modifier = Modifier.focusRequester(focusRequester)
                 ) {
                     DropdownMenuItem(
                         text = { Text("Temp") }, // TODO: Use Overpass API
